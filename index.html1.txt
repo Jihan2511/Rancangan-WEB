@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kalkulator Biaya Mahasiswa — Mockup</title>
+  <style>
+    :root{
+      --bg: #7a231f; /* deep red */
+      --card: #8f2d28;
+      --panel: #f8e9e6;
+      --accent: #6b201d;
+      --text-on-bg: #fff;
+      --muted: rgba(255,255,255,0.85);
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow: 0 6px 18px rgba(0,0,0,0.18);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    html,body{height:100%;}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text-on-bg);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:24px;
+      box-sizing:border-box;
+    }
+
+    /* Frame to mimic phone */
+    .phone{
+      width:360px;
+      max-width:100%;
+      background:var(--card);
+      border-radius:28px;
+      padding:20px;
+      box-shadow: var(--shadow);
+      box-sizing:border-box;
+    }
+
+    h1{
+      margin:0 0 18px 0;
+      font-size:28px;
+      line-height:1.05;
+      letter-spacing:0.2px;
+    }
+
+    .summary{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      margin-bottom:18px;
+    }
+
+    .chart-wrap{
+      width:120px;
+      height:120px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.92));
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: inset 0 -6px 14px rgba(0,0,0,0.06);
+      flex-shrink:0;
+    }
+    /* placeholder pie */
+    .pie{
+      width:88px;
+      height:88px;
+      border-radius:50%;
+      background:
+        conic-gradient(#7a231f 0 30%, #c98d85 30% 60%, rgba(0,0,0,0.06) 60% 80%, #f2d7d5 80% 100%);
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .summary-text{
+      color:var(--muted);
+      font-size:15px;
+    }
+    .summary-text strong{
+      display:block;
+      color:var(--text-on-bg);
+      font-size:16px;
+      margin-top:6px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.06);
+      padding:12px;
+      border-radius:var(--radius);
+      margin-bottom:14px;
+      box-shadow:var(--shadow);
+    }
+
+    .kategori-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .kategori-item{
+      background:rgba(255,255,255,0.04);
+      padding:14px 12px;
+      border-radius:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+      transition:transform .12s ease, background .12s ease;
+    }
+    .kategori-item:hover{ transform:translateY(-3px); background:rgba(255,255,255,0.06); }
+    .kategori-item span{ font-size:16px; color:var(--text-on-bg); }
+    .chev{
+      width:22px; height:22px; display:inline-block;
+      border-radius:6px; background:rgba(0,0,0,0.08);
+      display:flex; align-items:center; justify-content:center;
+    }
+
+    /* bottom nav */
+    .bottom-nav{
+      display:flex;
+      gap:18px;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:18px;
+      padding-top:10px;
+    }
+    .nav-btn{
+      flex:1;
+      background:transparent;
+      color:var(--muted);
+      text-align:center;
+      font-size:13px;
+      border:none;
+      padding:10px 6px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+    }
+    .nav-btn svg{ width:20px; height:20px; opacity:0.95; }
+
+    .fab{
+      width:56px;
+      height:56px;
+      background:var(--panel);
+      color:var(--accent);
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 8px 22px rgba(0,0,0,0.28);
+      border:none;
+      transform:translateY(-18px);
+      margin:0 auto;
+      position:relative;
+    }
+
+    /* Add Transaction panel (modal-like) */
+    .panel{
+      margin-top:18px;
+      background:var(--panel);
+      color:var(--accent);
+      padding:14px;
+      border-radius:18px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.18);
+    }
+    .tabs{ display:flex; gap:8px; margin-bottom:12px; }
+    .tab{
+      flex:1;
+      padding:10px;
+      border-radius:10px;
+      background:rgba(0,0,0,0.04);
+      text-align:center;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .tab.active{ background:var(--accent); color:var(--panel); }
+
+    .form-row{ display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }
+    label{ font-size:13px; color:var(--accent); font-weight:600; }
+    input[type="text"], input[type="date"], select, textarea{
+      padding:12px;
+      border-radius:10px;
+      border:1px solid rgba(0,0,0,0.06);
+      font-size:15px;
+      outline:none;
+      box-sizing:border-box;
+    }
+    .primary{
+      display:block;
+      width:100%;
+      padding:14px 12px;
+      border-radius:12px;
+      background:var(--accent);
+      color:var(--panel);
+      border:none;
+      font-weight:700;
+      font-size:15px;
+      cursor:pointer;
+      margin-top:6px;
+    }
+
+    /* small screens adjustments */
+    @media(min-width:420px){
+      .phone{ width:400px; padding:26px; }
+      .chart-wrap{ width:140px; height:140px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="phone" role="main" aria-labelledby="app-title">
+
+    <header>
+      <h1 id="app-title">Kalkulator Biaya<br>Hidup Mahasiswa</h1>
+    </header>
+
+    <!-- Summary -->
+    <section class="card">
+      <div class="summary" aria-hidden="true">
+        <div class="chart-wrap">
+          <div class="pie" role="img" aria-label="Diagram lingkaran pengeluaran"></div>
+        </div>
+        <div class="summary-text">
+          <div>Total</div>
+          <strong>1.500,000</strong>
+          <div style="height:8px;"></div>
+          <div>Pengeluaran</div>
+          <strong>875,000</strong>
+          <div style="height:8px;"></div>
+          <div>Saldo</div>
+          <strong>625.000</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category List -->
+    <section class="card">
+      <h2 style="margin-top:0; margin-bottom:10px;">Kategori</h2>
+      <nav class="kategori-list" aria-label="Daftar kategori">
+        <button class="kategori-item" onclick="openCategory('Makan')">
+          <span>Makan</span>
+          <span class="chev">▸</span>
+        </button>
+        <button class="kategori-item" onclick="openCategory('Transportasi')">
+          <span>Transportasi</span>
+          <span class="chev">▸</span>
+        </button>
+        <button class="kategori-item" onclick="openCategory('Sewa')">
+          <span>Sewa</span>
+          <span class="chev">▸</span>
+        </button>
+        <button class="kategori-item" onclick="openCategory('Lain-lain')">
+          <span>Lain-lain</span>
+          <span class="chev">▸</span>
+        </button>
+      </nav>
+    </section>
+
+    <!-- Add Transaction Panel (visible by default here) -->
+    <section class="panel" aria-labelledby="tambah-title">
+      <h3 id="tambah-title" style="margin:0 0 8px 0;">Tambah Transaksi</h3>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" id="tab-eks" role="tab" aria-selected="true" onclick="switchTab('eks')">Pengeluaran</button>
+        <button class="tab" id="tab-inc" role="tab" aria-selected="false" onclick="switchTab('inc')">Pemasukan</button>
+      </div>
+
+      <form id="transaksiForm" onsubmit="event.preventDefault(); saveTransaction();">
+
+        <div class="form-row">
+          <label for="tgl">Tanggal</label>
+          <input type="date" id="tgl" name="tanggal" value="">
+        </div>
+
+        <div class="form-row">
+          <label for="kategori">Kategori</label>
+          <select id="kategori" name="kategori" required>
+            <option value="Makan">Makan</option>
+            <option value="Transportasi">Transportasi</option>
+            <option value="Sewa">Sewa</option>
+            <option value="Lain-lain">Lain-lain</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="jumlah">Jumlah (Rp)</label>
+          <input type="text" id="jumlah" name="jumlah" inputmode="numeric" pattern="[0-9,\.]+" placeholder="16,000" required />
+        </div>
+
+        <div class="form-row">
+          <label for="ket">Keterangan</label>
+          <input type="text" id="ket" name="keterangan" placeholder="Sate ayam" />
+        </div>
+
+        <button class="primary" type="submit">SIMPAN</button>
+      </form>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" aria-label="Navigasi bawah">
+      <button class="nav-btn" onclick="goTo('kalkulator')">
+        <!-- simple icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" >
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+          <path d="M16 3v6"></path>
+          <path d="M8 21v-6"></path>
+        </svg>
+        <span>Kalkulator</span>
+      </button>
+
+      <button class="fab" title="Tambah transaksi" onclick="focusForm()">
+        <!-- plus -->
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14M5 12h14"></path>
+        </svg>
+      </button>
+
+      <button class="nav-btn" onclick="goTo('daftar')" >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 6h18"></path>
+          <path d="M3 12h18"></path>
+          <path d="M3 18h18"></path>
+        </svg>
+        <span>Daftar</span>
+      </button>
+    </nav>
+
+  </main>
+
+  <script>
+    // set today's date by default
+    document.getElementById('tgl').valueAsDate = new Date();
+
+    function openCategory(name){
+      alert('Buka kategori: ' + name);
+    }
+
+    function switchTab(id){
+      document.getElementById('tab-eks').classList.toggle('active', id === 'eks');
+      document.getElementById('tab-inc').classList.toggle('active', id === 'inc');
+      document.getElementById('tab-eks').setAttribute('aria-selected', id === 'eks');
+      document.getElementById('tab-inc').setAttribute('aria-selected', id === 'inc');
+      // jika pemasukan, jelaskan placeholder jumlah (positif) / pengeluaran (negatif) dsb
+      // implement logic sesuai kebutuhan
+    }
+
+    function focusForm(){
+      // tokoh aksi FAB: scroll to panel & focus jumlah
+      document.querySelector('.panel').scrollIntoView({behavior:'smooth', block:'center'});
+      setTimeout(()=> document.getElementById('jumlah').focus(), 300);
+    }
+
+    function saveTransaction(){
+      const data = {
+        tanggal: document.getElementById('tgl').value,
+        kategori: document.getElementById('kategori').value,
+        jumlah: document.getElementById('jumlah').value,
+        keterangan: document.getElementById('ket').value,
+        tipe: document.getElementById('tab-eks').classList.contains('active') ? 'pengeluaran' : 'pemasukan'
+      };
+      // TODO: kirim ke backend atau localStorage
+      console.log('SIMPAN', data);
+      alert('Transaksi tersimpan (demo):\\n' + JSON.stringify(data, null, 2));
+      // reset form contoh
+      // document.getElementById('transaksiForm').reset();
+      document.getElementById('jumlah').value = '';
+      document.getElementById('ket').value = '';
+    }
+
+    function goTo(page){
+      alert('Navigasi ke: ' + page);
+    }
+  </script>
+</body>
+</html>
